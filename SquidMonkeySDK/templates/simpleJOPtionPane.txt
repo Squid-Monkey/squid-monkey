@@ -1,0 +1,17 @@
+// Create a text area with 5 rows and 20 columns
+JTextArea textArea = new JTextArea(5, 20);
+
+// Set the initial text
+textArea.setText("Enter your message here...");
+
+// Append more text to the existing content
+textArea.append("\nAdditional line of text.");
+
+// Get the current text inside the text area
+String content = textArea.getText();
+
+// Make the text area editable or not (false = read-only)
+textArea.setEditable(true);
+
+// Set a custom font (Font name, style, size)
+textArea.setFont(new Font("Arial", Font.PLAIN, 14));

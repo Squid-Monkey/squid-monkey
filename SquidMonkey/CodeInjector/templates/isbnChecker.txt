@@ -1,0 +1,88 @@
+public class excercise2 {
+    static int check1 = 0, check2 = 0, check3 = 0, check4 = 0;
+    static int annex1 = 0, annex2 = 0, annex3 = 0, annex4 = 0;
+    public static void main(String[] args) {
+        String validIsbns = "";
+        String startsWith865 = "";
+        while (true) {
+            String userInput = JOptionPane.showInputDialog(null, "Enter an ISBN to validate:", "ISBN Validator", JOptionPane.QUESTION_MESSAGE);
+            if (userInput == null || userInput.isEmpty()) {
+                break;
+            }
+            validateISBN(userInput);
+            if (check1 == 1 && check2 == 1 && check3 == 1 && check4 == 1) {
+                JOptionPane.showMessageDialog(null, "Success: This is a valid ISBN.", "Valid ISBN", JOptionPane.INFORMATION_MESSAGE);
+                validIsbns += userInput + "\n";
+                if (userInput.startsWith("865")) {
+                    startsWith865 += userInput + "\n";
+                }
+            } else {
+                String errorMessage = "Invalid ISBN:\n\n";
+                if (annex1 == 1) errorMessage += "• Error: ISBN must have exactly 10 characters.\n";
+                if (annex2 == 1) errorMessage += "• Error: The first 9 characters must be digits.\n";
+                if (annex3 == 1) errorMessage += "• Error: The last character must be a digit or 'X'.\n";
+                if (annex4 == 1) errorMessage += "• Error: ISBN failed the golden rule check.\n";
+
+                JOptionPane.showMessageDialog(null, errorMessage, "Validation Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        String finalReport = "--- Final Report ---\n\n";
+        if (validIsbns.isEmpty()) {
+            finalReport += "No valid ISBN values were entered.";
+        } else {
+            finalReport += "All valid ISBNs entered:\n" + validIsbns + "\n";
+            finalReport += "Valid ISBNs starting with '865':\n";
+            if (startsWith865.isEmpty()) {
+                finalReport += "None.";
+            } else {
+                finalReport += startsWith865;
+            }
+        }
+        JOptionPane.showMessageDialog(null, finalReport, "ISBN Validation Summary", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public static void validateISBN(String isbn) {
+        check1 = 0; check2 = 0; check3 = 0; check4 = 0;
+        annex1 = 0; annex2 = 0; annex3 = 0; annex4 = 0;
+        if (isbn.length() != 10) {
+            annex1 = 1;
+            return;
+        } else {
+            check1 = 1;
+        }
+        boolean firstNineAreDigits = true;
+        for (int i = 0; i < 9; i++) {
+            if (!Character.isDigit(isbn.charAt(i))) {
+                firstNineAreDigits = false;
+                break;
+            }
+        }
+        if (firstNineAreDigits) {
+            check2 = 1;
+        } else {
+            annex2 = 1;
+        }
+        char lastChar = isbn.charAt(9);
+        if (Character.isDigit(lastChar) || lastChar == 'X' || lastChar == 'x') {
+            check3 = 1;
+        } else {
+            annex3 = 1;
+        }
+        if (check1 == 1 && check2 == 1 && check3 == 1) {
+            int total = 0;
+            for (int i = 0; i < 9; i++) {
+                total += Character.getNumericValue(isbn.charAt(i)) * (10 - i);
+            }
+            int remainder = total % 11;
+            int calculatedCheckDigit = 11 - remainder;
+            if (calculatedCheckDigit == 11) calculatedCheckDigit = 0;
+
+            int actualCheckDigit = (lastChar == 'X' || lastChar == 'x')
+                    ? 10 : Character.getNumericValue(lastChar);
+            if (calculatedCheckDigit == actualCheckDigit) {
+                check4 = 1;
+            } else {
+                annex4 = 1;
+            }
+        }
+    }
+}

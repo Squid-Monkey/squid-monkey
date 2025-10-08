@@ -1,0 +1,36 @@
+public class linearSearch {
+	public static void main(String[] args) {
+		String[] names= new String[5], phoneNumbers = new String[5];
+		String name;
+		int subscript;
+		populateArrays(names,phoneNumbers);
+		name = JOptionPane.showInputDialog("Whose phone number do you seek?");
+		subscript = linearSearch(names,name);
+		if(subscript != -1)
+			JOptionPane.showMessageDialog(null,"The phone number is " + phoneNumbers[subscript],
+					"Phone Number",JOptionPane.INFORMATION_MESSAGE);
+		else
+			JOptionPane.showMessageDialog(null,"Name not found!",
+					"Phone Number",JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
+	}
+
+	public static void populateArrays(String[] names, String[] phoneNumbers) {
+		for (int i = 0; i < names.length; i++) {
+			names[i] = JOptionPane.showInputDialog("Please enter the name of person " + (i+1));
+			phoneNumbers[i] = JOptionPane.showInputDialog("Please enter the phone-number of person " + (i+1));
+		}
+	}
+	public static int linearSearch(String[] names,String name) {
+		for (int i = 0; i < names.length; i++)
+			if(name.equals(names[i]))
+				return i;
+		return -1;
+	}
+}
+
+       	
+       	
+       	
+       	
+       

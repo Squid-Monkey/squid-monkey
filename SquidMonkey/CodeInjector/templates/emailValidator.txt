@@ -1,0 +1,108 @@
+public class EmailValidator {
+    static int check1, check2, check3, check4, check5, check6, check7;
+    static int annex1, annex2, annex3, annex4, annex5, annex6, annex7;
+    public static void main(String[] args) {
+        String validEmails = "";
+        for (int i = 0; i < 5; i++) {
+            boolean isCurrentEmailValid = false;
+            do {
+                String userInput = JOptionPane.showInputDialog(
+                        null,
+                        "Please enter email address " + (i + 1) + " of 5:",
+                        "Email Validator",
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (userInput == null) {
+                    System.exit(0);
+                }
+                validateEmail(userInput);
+                if (check1 == 1 && check2 == 1 && check3 == 1 && check4 == 1 && check5 == 1 && check6 == 1 && check7 == 1) {
+                    isCurrentEmailValid = true;
+                    validEmails += userInput + "\n";
+                    JOptionPane.showMessageDialog(null, "This is a valid email address.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String errorMessage = "Invalid Email. Reason(s):\n\n";
+                    if (annex1 == 1) errorMessage += "• Overall length must be between 7 and 322 characters.\n";
+                    if (annex2 == 1) errorMessage += "• Email must contain exactly one '@' symbol.\n";
+                    if (annex3 == 1) errorMessage += "• Must end with .org, .com, .net, or .ie\n";
+                    if (annex4 == 1) errorMessage += "• The recipient name (before @) must be 1-64 characters.\n";
+                    if (annex5 == 1) errorMessage += "• The recipient name contains invalid characters.\n";
+                    if (annex6 == 1) errorMessage += "• The domain name must be 2-253 characters.\n";
+                    if (annex7 == 1) errorMessage += "• The domain name contains invalid characters.\n";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Validation Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } while (!isCurrentEmailValid);
+        }
+        String finalReport = "--- All 5 Valid Emails Entered ---\n\n" + validEmails;
+        JOptionPane.showMessageDialog(null, finalReport, "Validation Complete", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public static void validateEmail(String email) {
+        check1=0; check2=0; check3=0; check4=0; check5=0; check6=0; check7=0;
+        annex1=0; annex2=0; annex3=0; annex4=0; annex5=0; annex6=0; annex7=0;
+        if (email.length() >= 7 && email.length() <= 322) {
+            check1 = 1;
+        } else {
+            annex1 = 1;
+        }
+        int atSymbolCount = 0;
+        for (int i = 0; i < email.length(); i++) {
+            if (email.charAt(i) == '@') {
+                atSymbolCount++;
+            }
+        }
+        if (atSymbolCount == 1) {
+            check2 = 1;
+        } else {
+            annex2 = 1;
+        }
+        if (email.endsWith(".org") || email.endsWith(".com") || email.endsWith(".net") || email.endsWith(".ie")) {
+            check3 = 1;
+        } else {
+            annex3 = 1;
+        }
+        if (check2 == 1) {
+            int atIndex = email.indexOf('@');
+            String recipient = email.substring(0, atIndex);
+            if (recipient.length() >= 1 && recipient.length() <= 64) {
+                check4 = 1;
+            } else {
+                annex4 = 1;
+            }
+            boolean recipientCharsOk = true;
+            for (int j = 0; j < recipient.length(); j++) {
+                char i = recipient.charAt(j); // get the j-th character
+                if (!Character.isLetterOrDigit(i) && i != '-' && i != '_' && i != '.') {
+                    recipientCharsOk = false;
+                    break;
+                }
+            }
+            if (recipientCharsOk) {
+                check5 = 1;
+            } else {
+                annex5 = 1;
+            }
+        }
+        if (check2 == 1 && check3 == 1) {
+            int atIndex = email.indexOf('@');
+            int lastDotIndex = email.lastIndexOf('.');
+            String domain = email.substring(atIndex + 1, lastDotIndex);
+            if (domain.length() >= 2 && domain.length() <= 253) {
+                check6 = 1;
+            } else {
+                annex6 = 1;
+            }
+            boolean domainCharsOk = true;
+            for (char c : domain.toCharArray()) {
+                if (!Character.isLetterOrDigit(c) && c != '-' && c != '.') {
+                    domainCharsOk = false;
+                    break;
+                }
+            }
+            if (domainCharsOk) {
+                check7 = 1;
+            } else {
+                annex7 = 1;
+            }
+        }
+    }
+}

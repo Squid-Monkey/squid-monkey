@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class DataSentinelControlledWhileLoop {
+    public static void main(String[] args) {
+
+        float height,totalHeight = 0;
+        int numProcessed =0;
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Please enter height" + (numProcessed+1) );
+        height = input.nextFloat();
+
+        while(height != -1){
+            numProcessed++;
+            totalHeight += height;
+
+            System.out.print("Please enter height" + (numProcessed+1) );
+            height = input.nextFloat();
+        }
+        if(numProcessed == 0){
+            System.out.println("There is nothing to process");
+        }
+        else
+            System.out.println("number processed" + numProcessed + "average" + String.format("%.2f",totalHeight/numProcessed));
+    }
+}
